@@ -66,6 +66,12 @@ __0.1.1__
 
 - Attaches authentication global hook
 
+__0.1.2__
+
+- Updates eslint setting
+
+- Enables graphql
+
 ## License
 
 Copyright (c) 2019
