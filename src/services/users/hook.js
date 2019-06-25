@@ -4,12 +4,12 @@ import { authentication, hashPassword, hidePassword } from '../../hooks'
 
 export default {
   before: {
-    all: [authentication],
-    get: [],
-    find: [],
+    all: [],
+    get: [authentication],
+    find: [authentication],
     create: [hashPassword],
-    update: [hashPassword],
-    delete: []
+    update: [authentication, hashPassword],
+    delete: [authentication]
   },
   after: {
     all: [hidePassword],

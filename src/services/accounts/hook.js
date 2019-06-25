@@ -1,6 +1,10 @@
+'use strict'
+
+import { authentication } from '../../hooks'
+
 export default {
   before: {
-    all: [],
+    all: [authentication],
     get: [],
     find: [],
     create: [],
