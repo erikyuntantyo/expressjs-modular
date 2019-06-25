@@ -23,7 +23,6 @@
       "unix"
     ],
     "no-console": "off",
-    "no-unused-vars": "off",
     "prefer-template": "error",
     "quotes": [
       "error",
