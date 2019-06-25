@@ -7,6 +7,8 @@ import {
   GraphQLString
 } from 'graphql'
 import { Kind } from 'graphql/language'
+import crypto from 'crypto'
+import uuidv4 from 'uuidv4'
 
 import Models from '../models'
 
@@ -39,7 +41,7 @@ const BanksType = new GraphQLObjectType({
 })
 
 const AccountsType = new GraphQLObjectType({
-  name: 'Accounts',
+  name: 'accounts',
   fields: {
     id: {
       type: GraphQLID
@@ -70,7 +72,7 @@ const AccountsType = new GraphQLObjectType({
 })
 
 const UsersType = new GraphQLObjectType({
-  name: 'Users',
+  name: 'users',
   fields: {
     id: {
       type: GraphQLID
@@ -89,11 +91,14 @@ const UsersType = new GraphQLObjectType({
 })
 
 const Query = new GraphQLObjectType({
-  name: 'Query',
+  name: 'query',
   fields: {
     Users: {
       type: GraphQLList(UsersType),
-      resolve: async () => await Models.getModels().users.find()
+      resolve: async () => {
+        const { rows } = await Models.getModels().users.find()
+        return rows.map(r => r.dataValues)
+      }
     },
     User: {
       type: UsersType,
@@ -102,11 +107,17 @@ const Query = new GraphQLObjectType({
           type: GraphQLID
         }
       },
-      resolve: async (parent, args) => await Models.getModels().users.get(args.id)
+      resolve: async (parent, args) => {
+        const { dataValues } = await Models.getModels().users.get(args.id)
+        return dataValues
+      }
     },
     Accounts: {
       type: GraphQLList(AccountsType),
-      resolve: async () => await Models.getModels().accounts.find()
+      resolve: async () => {
+        const { rows } = await Models.getModels().accounts.find()
+        return rows.map(r => r.dataValues)
+      }
     },
     Account: {
       type: AccountsType,
@@ -115,13 +126,35 @@ const Query = new GraphQLObjectType({
           type: GraphQLID
         }
       },
-      resolve: async (parent, args) => await Models.getModels().accounts.get(args.id)
+      resolve: async (parent, args) => {
+        const { dataValues } = await Models.getModels().accounts.get(args.id)
+        return dataValues
+      }
+    },
+    Banks: {
+      type: GraphQLList(BanksType),
+      resolve: async () => {
+        const { rows } = await Models.getModels().banks.find()
+        return rows.map(r => r.dataValues)
+      }
+    },
+    Bank: {
+      type: BanksType,
+      args: {
+        id: {
+          type: GraphQLID
+        }
+      },
+      resolve: async (parent, args) => {
+        const { dataValues } = await Models.getModels().banks.get(args.id)
+        return dataValues
+      }
     }
   }
 })
 
 const Mutation = new GraphQLObjectType({
-  name: 'Mutation',
+  name: 'mutation',
   fields: () => ({
     newUser: {
       type: UsersType,
@@ -137,8 +170,8 @@ const Mutation = new GraphQLObjectType({
         }
       },
       resolve: async (value, data) => {
-        let { dataValues: user } = await Models.getModels().users.post(data)
-        return user
+        let { dataValues } = await Models.getModels().users.post(data)
+        return dataValues
       }
     },
     opsUser: {
@@ -158,26 +191,33 @@ const Mutation = new GraphQLObjectType({
         }
       },
       resolve: async (value, body) => {
-        let { username, password, type, ops } = body
-        let data
+        let { id, username, password, type, ops } = body
 
         if (ops === 'new') {
-          data = { username, password, type }
+          const { dataValues } = await Models.getModels().users.create({
+            id: uuidv4(),
+            username,
+            password: crypto.createHash('sha256').update(password).digest('base64'),
+            type
+          })
 
-          const { dataValues: user } = await Models.getModels().users.post(data)
-
-          return user
+          return dataValues
         }
 
         if (ops === 'edit') {
-          // edit data
+          const { dataValues } = await Models.getModels().users.update(id, {
+            username,
+            password: crypto.createHash('sha256').update(password).digest('base64'),
+            type
+          })
+
+          return dataValues
         }
 
         if (ops === 'delete') {
-          // edit data
+          const { dataValues } = await Models.getModels().users.delete(id)
+          return dataValues
         }
-
-        return data
       }
     }
   }),
