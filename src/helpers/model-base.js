@@ -17,7 +17,7 @@ export default class ModelBase {
     return this._schema.create(data)
   }
 
-  update(id, data, params) {
+  update(id, data) {
     return this._schema.update(data, {
       where: { id }
     })
