@@ -3,12 +3,12 @@
     "port": 3030
   },
   "db": {
-    "name": "ebINmbikcJ",
+    "name": "express_test",
     "dialect": "mysql",
-    "host": "remotemysql.com",
+    "host": "localhost",
     "port": 3306,
-    "username": "ebINmbikcJ",
-    "password": "GKueUSWJI0",
+    "username": "root",
+    "password": "qweasd123",
     "force": false
   },
   "auth": {
