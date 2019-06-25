@@ -50,6 +50,22 @@ __0.1.0__
 
 - Initial commit
 
+__0.1.1__
+
+- Changes node module package
+
+- Inserts strict method
+
+- Update service base class middleware method
+
+- Updates password hashing global hook
+
+- Updates authentication global hook
+
+- Adds authentication service module
+
+- Attaches authentication global hook
+
 ## License
 
 Copyright (c) 2019
