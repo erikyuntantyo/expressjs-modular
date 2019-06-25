@@ -26,8 +26,7 @@ export default class Service extends ServiceBase {
 
   async find(params) {
     // Use this to enable get request all data for 'users' model
-    const results = await this.models.users.find(params)
-    return results
+    return await this.models.users.find(params)
   }
 
   async create(data) {
@@ -36,22 +35,16 @@ export default class Service extends ServiceBase {
       throw new CustomError(405, 'Not allowed bulk insert')
     }
 
-    const results = await this.models.users.create(data)
-
-    return results.dataValues
+    return await this.models.users.create(data)
   }
 
-  async update(id, data, params) {
+  async update(id, data) {
     // Use this to enable put request for 'users' model
-    console.log('id', id)
-    console.log('data', data)
-
-    return { id, ...data }
+    return this.models.users.update(id, data)
   }
 
-  async delete(id, params) {
+  async delete(id) {
     // Use this to enable delete request by Id for 'users' model
-    console.log('id', id)
-    return { id }
+    return this.models.users.delete(id)
   }
 }
