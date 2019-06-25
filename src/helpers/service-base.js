@@ -37,14 +37,16 @@ export default class ServiceBase {
 
       router.get(`${this.path}/:id`, hookBeforeGet, async (req, res, next) => {
         try {
-          const found = await this.get(req.params.id)
-          res.results = found.dataValues
+          const { dataValues } = await this.get(req.params.id)
+
+          res.results = dataValues
+
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            res.status(err.code).send(err.toJson())
+            return res.status(err.code).send(err.toJson())
           } else {
-            res.status(500).send(err.message)
+            return res.status(500).send(err.message)
           }
         }
       }, hookAfterGet, async (req, res) => res.json(res.results).end())
@@ -74,14 +76,15 @@ export default class ServiceBase {
       router.get(this.path, hookBeforeFind, async (req, res, next) => {
         try {
           const { count, rows } = await this.find(req.query)
-          res.results = { total: count, data: rows.map(row => row.dataValues)}
+
+          res.results = { total: count, data: rows.map(row => row.dataValues) }
 
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            res.status(err.code).send(err.toJson())
+            return res.status(err.code).send(err.toJson())
           } else {
-            res.status(500).send(err.message)
+            return res.status(500).send(err.message)
           }
         }
       }, hookAfterFind, async (req, res) => res.json(res.results).end())
@@ -110,13 +113,16 @@ export default class ServiceBase {
 
       router.post(this.path, hookBeforeCreate, async (req, res, next) => {
         try {
-          res.results = await this.create(req.body)
+          const created = await this.create(req.body)
+
+          res.results = created.dataValues || created
+
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            res.status(err.code).send(err.toJson())
+            return res.status(err.code).send(err.toJson())
           } else {
-            res.status(500).send(err.message)
+            return res.status(500).send(err.message)
           }
         }
       }, hookAfterCreate, async (req, res) => res.json(res.results).end())
@@ -145,13 +151,16 @@ export default class ServiceBase {
 
       router.put(`${this.path}/:id`, hookBeforeUpdate, async (req, res, next) => {
         try {
-          res.results = await this.update(req.params.id, req.body, req.query)
+          const { dataValues } = await this.update(req.params.id, req.body, req.query)
+
+          res.results = dataValues
+
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            res.status(err.code).send(err.toJson())
+            return res.status(err.code).send(err.toJson())
           } else {
-            res.status(500).send(err.message)
+            return res.status(500).send(err.message)
           }
         }
       }, hookAfterUpdate, async (req, res) => res.json(res.results).end())
@@ -180,13 +189,16 @@ export default class ServiceBase {
 
       router.delete(`${this.path}/:id`, hookBeforeDelete, async (req, res, next) => {
         try {
-          res.results = await this.delete(req.params.id, req.query)
+          const { dataValues } = await this.delete(req.params.id, req.query)
+
+          res.results = dataValues
+
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            res.status(err.code).send(err.toJson())
+            return res.status(err.code).send(err.toJson())
           } else {
-            res.status(500).send(err.message)
+            return res.status(500).send(err.message)
           }
         }
       }, hookAfterDelete, async (req, res) => res.json(res.results).end())
