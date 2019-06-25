@@ -6,7 +6,7 @@ export default class ModelBase {
   }
 
   get(id) {
-    return this._schema.findByPK(id)
+    return this._schema.findByPk(id)
   }
 
   find(params) {
