@@ -1,3 +1,5 @@
+'use strict'
+
 export default async (req, res, next) => {
   if (res.results.password) {
     delete res.results.password

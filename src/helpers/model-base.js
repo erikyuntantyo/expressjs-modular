@@ -1,3 +1,5 @@
+'use strict'
+
 export default class ModelBase {
   constructor(schema) {
     this._schema = schema
