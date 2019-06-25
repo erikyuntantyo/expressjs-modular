@@ -189,6 +189,10 @@ __0.1.3__
 
 - Updates default server configuration
 
+__0.1.4__
+
+- Fixes graphql module
+
 ## License
 
 Copyright (c) 2019
