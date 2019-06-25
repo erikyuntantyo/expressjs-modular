@@ -51,7 +51,10 @@ const AccountsType = new GraphQLObjectType({
     },
     bank: {
       type: BanksType,
-      resolve: async (parent) => await Models.getModels().banks.get(parent.bankId)
+      resolve: async (parent) => {
+        const { dataValues } = await Models.getModels().banks.get(parent.bankId)
+        return dataValues
+      }
     },
     firstName: {
       type: GraphQLString
@@ -85,7 +88,10 @@ const UsersType = new GraphQLObjectType({
     },
     account: {
       type: AccountsType,
-      resolve: async (parent) => await Models.getModels().accounts.get(parent.accountId)
+      resolve: async (parent) => {
+        const { dataValues } = await Models.getModels().accounts.get(parent.accountId)
+        return dataValues
+      }
     }
   }
 })
