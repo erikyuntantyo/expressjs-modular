@@ -1,10 +1,10 @@
 # expressjs-modular
 
-> Implementation ExpressJS modular approach with ES6
+> Implementation ExpressJS modular approach with ES6 and GraphQL example
 
 ## About
 
-This is the a ExpressJS modular approach example that uses ES6.
+This is an example of ExpressJS modular approach that uses ES6 and include GraphQL example.
 
 ## Getting Started
 
@@ -71,6 +71,20 @@ __0.1.2__
 - Updates eslint setting
 
 - Enables graphql
+
+__0.1.3__
+
+- Updates service classes methods
+
+- Sets unique id before created data
+
+- Removes unused argument
+
+- Fixes typo method name in model-base class
+
+- Updates graphql module
+
+- Updates default server configuration
 
 ## License
 
