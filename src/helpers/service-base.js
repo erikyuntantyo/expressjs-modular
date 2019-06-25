@@ -1,6 +1,8 @@
 'use strict'
 
 import express from 'express'
+import uuidv4 from 'uuidv4'
+
 import CustomError from './custom-error'
 
 export default class ServiceBase {
@@ -113,6 +115,8 @@ export default class ServiceBase {
 
       router.post(this.path, hookBeforeCreate, async (req, res, next) => {
         try {
+          req.body.id = uuidv4()
+
           const created = await this.create(req.body)
 
           res.results = created.dataValues || created
