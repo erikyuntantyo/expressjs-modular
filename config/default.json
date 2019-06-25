@@ -1,0 +1,17 @@
+{
+  "server": {
+    "port": 3030
+  },
+  "db": {
+    "name": "ebINmbikcJ",
+    "dialect": "mysql",
+    "host": "remotemysql.com",
+    "port": 3306,
+    "username": "ebINmbikcJ",
+    "password": "GKueUSWJI0",
+    "force": false
+  },
+  "auth": {
+    "secret": "fHqvvv6h57lQ2vvl4lEKlXS1bbpFFhtWAX5SuPZr3VHTsfz8cR2CVLZzZyFzQO0GtVPisZYZBtMtFTOBuxpFi6l9jwBJluje0l6R"
+  }
+}

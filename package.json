@@ -1,0 +1,58 @@
+{
+  "name": "expressjs-modular",
+  "version": "0.1.0",
+  "description": "Implementation ExpressJS with Graphql",
+  "main": "src/index.js",
+  "engines": {
+    "node": "^8.0.0",
+    "yarn": ">= 0.18.0"
+  },
+  "scripts": {
+    "test": "yarn run eslint && NODE_ENV= jest --verbose --detectOpenHandles",
+    "start": "nodemon --exec babel-node src/",
+    "debug": "DEBUG=express:* nodemon --exec babel-node src/",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "jest": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikyuntantyo/expressjs-modular.git"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "jestjs",
+    "babeljs"
+  ],
+  "author": {
+    "name": "Erik Yuntantyo",
+    "email": "erik.yuntantyo@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikyuntantyo/expressjs-modular/issues"
+  },
+  "homepage": "https://github.com/erikyuntantyo/expressjs-modular",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
+    "config": "^3.1.0",
+    "cors": "^2.8.5",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "method-override": "^3.0.0",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.8.9",
+    "uuidv4": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0",
+    "request-promise": "^4.2.4"
+  }
+}
