@@ -1,5 +1,6 @@
 'use strict'
 
+import AuthenticationService from './authentication'
 import AccountsService from './accounts'
 import BanksService from './banks'
 import TransactionsService from './transactions'
@@ -7,6 +8,7 @@ import UsersService from './users'
 
 export default class Services {
   constructor(app, models) {
+    AuthenticationService.initialize(app, models)
     AccountsService.initialize(app, models)
     BanksService.initialize(app, models)
     TransactionsService.initialize(app, models)
