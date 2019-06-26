@@ -38,11 +38,6 @@ export default class Service extends ServiceBase {
     await this.models.transactions.create(data)
   }
 
-  async update(id, data) {
-    // Use this to enable put request for 'transactions' model
-    return await this.models.transactions.update(id, data)
-  }
-
   async delete(id) {
     // Use this to enable delete request by Id for 'transactions' model
     return await this.models.transactions.delete(id)
