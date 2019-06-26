@@ -161,7 +161,25 @@ const Query = new GraphQLObjectType({
 
 const Mutation = new GraphQLObjectType({
   name: 'mutation',
-  fields: () => ({
+  fields: {
+    newBank: {
+      type: BanksType,
+      args: {
+        name: {
+          type: GraphQLString
+        },
+        code: {
+          type: GraphQLString
+        }
+      },
+      resolve: async (value, data) => {
+        data.id = uuidv4()
+
+        const { dataValues } = await Models.getModels().banks.create(data)
+
+        return dataValues
+      }
+    },
     newUser: {
       type: UsersType,
       args: {
@@ -176,7 +194,10 @@ const Mutation = new GraphQLObjectType({
         }
       },
       resolve: async (value, data) => {
-        let { dataValues } = await Models.getModels().users.post(data)
+        data.id = uuidv4()
+
+        const { dataValues } = await Models.getModels().users.create(data)
+
         return dataValues
       }
     },
@@ -226,7 +247,7 @@ const Mutation = new GraphQLObjectType({
         }
       }
     }
-  }),
+  }
 })
 
 export default new GraphQLSchema({
