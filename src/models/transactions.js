@@ -14,7 +14,7 @@ export default class Model extends ModelBase {
         allowNull: false,
         defaultValue: uuidv4()
       },
-      user: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false
       },
