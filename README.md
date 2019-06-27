@@ -143,9 +143,11 @@ root  // root folder
 
 ## Todo
 
-1. Adds another graphql schema to handle all CRUD processes
+1. Add another graphql schema to handle all CRUD processes
 
 2. Completing transaction module
+
+3. Add authentication in graphql method
 
 ## Changelog
 
@@ -192,6 +194,16 @@ __0.1.3__
 __0.1.4__
 
 - Fixes graphql module
+
+__0.1.5__
+
+- Disables update transaction
+
+- Disables delete transactions
+
+- Update graphql mutation method
+
+- Updates graphql schema module
 
 ## License
 
