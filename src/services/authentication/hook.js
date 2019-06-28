@@ -1,13 +1,11 @@
 'use strict'
 
-import { hashPassword } from '../../hooks'
-
 export default {
   before: {
     all: [],
     get: [],
     find: [],
-    create: [hashPassword],
+    create: [],
     update: [],
     delete: []
   },

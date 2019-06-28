@@ -1,10 +1,10 @@
 'use strict'
 
-import crypto from 'crypto'
+import bcrypt from 'bcrypt'
 
 export default async (req, res, next) => {
   if (req.body.password) {
-    req.body.password = crypto.createHash('sha256').update(req.body.password).digest('base64')
+    req.body.password = bcrypt.hash(req.body.password, 10)
   }
 
   next()

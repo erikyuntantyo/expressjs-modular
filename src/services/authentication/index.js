@@ -1,5 +1,6 @@
 'use strict'
 
+import bcrypt from 'bcrypt'
 import config from 'config'
 import jwt from 'jsonwebtoken'
 import uuidv4 from 'uuidv4'
@@ -25,25 +26,29 @@ export default class Service extends ServiceBase {
 
   async create({ username, password }) {
     if (username && password) {
-      const { count, rows  } = await this.models.users.find({
-        where: { username, password }
+      const { count, rows } = await this.models.users.find({
+        where: { username }
       })
 
       if (count > 0) {
         const [{ dataValues: user }] = rows
-        const now = Date.now()
-        const exp = now + (3600 * 1000)
-        const token = jwt.sign({
-          userId: user.id,
-          type: user.type,
-          iat: now,
-          exp,
-          iss: 'expressjs',
-          sub: 'anonymous',
-          jwtid: uuidv4()
-        }, config.auth.secret)
 
-        return { token }
+        if (await bcrypt.compare(password, user.password)) {
+          const now = Date.now()
+          const exp = now + (3600 * 1000)
+          const resetKey = await bcrypt.hash(`${username}:${password}`, 10)
+          const token = jwt.sign({
+            userId: user.id,
+            type: user.type,
+            iat: now,
+            exp,
+            iss: 'expressjs',
+            sub: 'anonymous',
+            jwtid: uuidv4()
+          }, config.auth.secret)
+
+          return { token, resetKey }
+        }
       }
 
       throw new CustomError(401, 'Invalid authentication')

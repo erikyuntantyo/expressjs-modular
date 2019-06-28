@@ -46,7 +46,7 @@ export default class ServiceBase {
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            return res.status(err.code).send(err.toJson())
+            return res.status(err.statusCode).send(err.toJSON())
           } else {
             return res.status(500).send(err.message)
           }
@@ -84,7 +84,7 @@ export default class ServiceBase {
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            return res.status(err.code).send(err.toJson())
+            return res.status(err.statusCode).send(err.toJSON())
           } else {
             return res.status(500).send(err.message)
           }
@@ -124,7 +124,7 @@ export default class ServiceBase {
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            return res.status(err.code).send(err.toJson())
+            return res.status(err.statusCode).send(err.toJSON())
           } else {
             return res.status(500).send(err.message)
           }
@@ -162,7 +162,7 @@ export default class ServiceBase {
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            return res.status(err.code).send(err.toJson())
+            return res.status(err.statusCode).send(err.toJSON())
           } else {
             return res.status(500).send(err.message)
           }
@@ -200,7 +200,7 @@ export default class ServiceBase {
           next()
         } catch (err) {
           if (err instanceof CustomError) {
-            return res.status(err.code).send(err.toJson())
+            return res.status(err.statusCode).send(err.toJSON())
           } else {
             return res.status(500).send(err.message)
           }
