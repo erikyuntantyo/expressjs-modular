@@ -14,7 +14,7 @@ export default new GraphQLObjectType({
     user: {
       type: GraphQLAccount,
       resolve: async ({ userId }) => {
-        const { dataValues } = await Models.getModels().users.get(userId)
+        const { dataValues } = await Models.getModels().users.get(userId) || {}
         return dataValues
       }
     },

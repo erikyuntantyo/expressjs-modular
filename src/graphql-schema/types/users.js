@@ -20,7 +20,7 @@ export default new GraphQLObjectType({
     account: {
       type: GraphQLAccount,
       resolve: async ({ accountId }) => {
-        const { dataValues } = await Models.getModels().accounts.get(accountId)
+        const { dataValues } = await Models.getModels().accounts.get(accountId) || {}
         return dataValues
       }
     }

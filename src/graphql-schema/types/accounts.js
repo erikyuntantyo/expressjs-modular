@@ -18,7 +18,7 @@ export default new GraphQLObjectType({
     bank: {
       type: GraphQLBank,
       resolve: async ({ bankId }) => {
-        const { dataValues } = await Models.getModels().banks.get(bankId)
+        const { dataValues } = await Models.getModels().banks.get(bankId) || {}
         return dataValues
       }
     },
