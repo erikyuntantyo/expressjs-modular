@@ -9,10 +9,10 @@ import graphQLHttp from 'express-graphql'
 import methodOverride from 'method-override'
 
 import DBClient from './sequelize'
+import { GraphQLInternalServerError } from './helpers/graphql-custom-errors'
 import Models from './models'
+import schema from './graphql-schema'
 import Services from './services'
-
-import graphQLSchema from './graphql-schema'
 
 export default class App {
   constructor() {
@@ -29,10 +29,21 @@ export default class App {
     DBClient.initialize(config.db).then(() => console.log('Database initialized...'))
     Services.initialize(this._server, Models.initialize(DBClient.connection()).getModels())
 
-    this._server.use('/graphql', graphQLHttp({
-      schema: graphQLSchema,
-      graphiql: true
-    }))
+    this._server.use('/graphql', graphQLHttp((req) => ({
+      schema,
+      graphiql: true,
+      context: { req },
+      customFormatErrorFn: error => {
+        if (error && error.originalError) {
+          return {
+            statusCode: error.originalError.statusCode,
+            ...error
+          }
+        }
+
+        return new GraphQLInternalServerError()
+      }
+    })))
 
     this._server.use((req, res) => res.status(404).send('Route doesn\'t exist.').end())
   }
