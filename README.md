@@ -205,6 +205,24 @@ __0.1.5__
 
 - Updates graphql schema module
 
+__0.2.0__
+
+- Updates graphql mutation method
+
+- Adds bcrypt module
+
+- Updates express service module
+
+- Creates custom errors for graphql module
+
+- Creates token verification method
+
+- Updates authentication global hook method
+
+- Creates authentication method for graphql module
+
+- Enables custom errors for graphql module
+
 ## License
 
 Copyright (c) 2019
