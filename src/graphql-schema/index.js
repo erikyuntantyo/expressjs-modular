@@ -2,15 +2,8 @@
 
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
 
-import { GraphQLBankMutations, GraphQLUserMutations } from './mutations'
+import { GraphQLAuthMutations, GraphQLBankMutations, GraphQLUserMutations } from './mutations'
 import { GraphQLAccountQueries, GraphQLBankQueries, GraphQLUserQueries } from './queries'
-
-const mutationFields = () => ({
-  ...GraphQLBankMutations,
-  ...GraphQLUserMutations
-})
-
-console.log('test', mutationFields)
 
 const query = new GraphQLObjectType({
   name: 'query',
@@ -24,6 +17,7 @@ const query = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: 'mutation',
   fields: {
+    ...GraphQLAuthMutations,
     ...GraphQLBankMutations,
     ...GraphQLUserMutations
   }

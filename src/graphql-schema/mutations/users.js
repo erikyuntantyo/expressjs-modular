@@ -1,6 +1,6 @@
 'use strict'
 
-import crypto from 'crypto'
+import bcrypt from 'bcrypt'
 import { GraphQLID, GraphQLString } from 'graphql'
 import uuidv4 from 'uuidv4'
 
@@ -23,6 +23,7 @@ export default {
     },
     resolve: async (rootValue, data) => {
       data.id = uuidv4()
+      data.password = await bcrypt.hash(data.password, 10)
 
       const { dataValues } = await Models.getModels().users.create(data)
 
@@ -48,7 +49,7 @@ export default {
     resolve: async (rootValue, { id, username, password, type }) => {
       const { dataValues } = await Models.getModels().users.update(id, {
         username,
-        password: crypto.createHash('sha256').update(password).digest('base64'),
+        password: await bcrypt.hash(password, 10),
         type
       })
 
