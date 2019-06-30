@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 import { GraphQLID, GraphQLString } from 'graphql'
 import uuidv4 from 'uuidv4'
 
+import CommonHelper from '../../helpers/common'
 import { GraphQLUser } from '../types'
 import Models from '../../models'
 
@@ -25,9 +26,7 @@ export default {
       data.id = uuidv4()
       data.password = await bcrypt.hash(data.password, 10)
 
-      const { dataValues } = await Models.getModels().users.create(data)
-
-      return dataValues
+      return await Models.getModels().users.create(data)
     }
   },
   updateUser: {
@@ -46,14 +45,17 @@ export default {
         type: GraphQLString
       }
     },
-    resolve: async (rootValue, { id, username, password, type }) => {
-      const { dataValues } = await Models.getModels().users.update(id, {
-        username,
-        password: await bcrypt.hash(password, 10),
-        type
-      })
-
-      return dataValues
+    resolve: async (rootValue, { id, username, password, type }, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        return await Models.getModels().users.update(id, {
+          username,
+          password: await bcrypt.hash(password, 10),
+          type
+        })
+      } catch (err) {
+        throw err
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-import { GraphQLFloat, GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLFloat, GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLAccount from './accounts'
 import Models from '../../models'
@@ -9,26 +9,23 @@ export default new GraphQLObjectType({
   name: 'transactions',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     },
     user: {
-      type: GraphQLAccount,
-      resolve: async ({ userId }) => {
-        const { dataValues } = await Models.getModels().users.get(userId) || {}
-        return dataValues
-      }
+      type: new GraphQLNonNull(GraphQLAccount),
+      resolve: async ({ userId }) => await Models.getModels().users.get(userId)
     },
     type: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     amount: {
-      type: GraphQLFloat
+      type: new GraphQLNonNull(GraphQLFloat)
     },
     description: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     balance: {
-      type: GraphQLFloat
+      type: new GraphQLNonNull(GraphQLFloat)
     }
   }
 })

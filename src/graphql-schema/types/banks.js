@@ -1,18 +1,18 @@
 'use strict '
 
-import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 export default new GraphQLObjectType({
   name: 'banks',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     },
     name: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     code: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     }
   }
 })

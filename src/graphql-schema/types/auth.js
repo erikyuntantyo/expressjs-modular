@@ -1,15 +1,15 @@
 'use strict'
 
-import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 export default new GraphQLObjectType({
   name: 'auth',
   fields: {
     token: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     resetKey: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     }
   }
 })

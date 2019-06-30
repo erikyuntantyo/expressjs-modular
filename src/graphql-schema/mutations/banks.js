@@ -3,6 +3,7 @@
 import { GraphQLID, GraphQLString } from 'graphql'
 import uuidv4 from 'uuidv4'
 
+import CommonHelper from '../../helpers/common'
 import { GraphQLBank } from '../types'
 import Models from '../../models'
 
@@ -17,12 +18,14 @@ export default {
         type: GraphQLString
       }
     },
-    resolve: async (rootValue, data) => {
-      data.id = uuidv4()
-
-      const { dataValues } = await Models.getModels().banks.create(data)
-
-      return dataValues
+    resolve: async (rootValue, data, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        data.id = uuidv4()
+        return await Models.getModels().banks.create(data)
+      } catch (err) {
+        throw err
+      }
     }
   },
   updateBank: {
@@ -38,6 +41,13 @@ export default {
         type: GraphQLString
       }
     },
-    resolve: async () => { }
+    resolve: async (rootValue, { id, name, code }, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        return await Models.getModels().banks.update(id, { name, code })
+      } catch (e) {
+        throw e
+      }
+    }
   }
 }

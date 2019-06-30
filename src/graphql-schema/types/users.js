@@ -1,28 +1,26 @@
 'use strict'
 
-import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLAccount from './accounts'
+import GraphQLUserRole from './user-roles'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
   name: 'users',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     },
     username: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     type: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLUserRole)
     },
     account: {
       type: GraphQLAccount,
-      resolve: async ({ accountId }) => {
-        const { dataValues } = await Models.getModels().accounts.get(accountId) || {}
-        return dataValues
-      }
+      resolve: async ({ accountId }) => await Models.getModels().accounts.get(accountId)
     }
   }
 })

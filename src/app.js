@@ -32,7 +32,7 @@ export default class App {
     this._server.use('/graphql', graphQLHttp((req) => ({
       schema,
       graphiql: true,
-      context: { req },
+      context: { ...req },
       customFormatErrorFn: error => {
         if (error && error.originalError) {
           return {

@@ -1,7 +1,8 @@
 'use strict'
 
-import { GraphQLID, GraphQLList } from 'graphql'
+import { GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql'
 
+import CommonHelper from '../../helpers/common'
 import { GraphQLBank } from '../types'
 import Models from '../../models'
 
@@ -10,19 +11,28 @@ export default {
     type: GraphQLBank,
     args: {
       id: {
-        type: GraphQLID
+        type: new GraphQLNonNull(GraphQLID)
       }
     },
-    resolve: async (rootValue, { id }) => {
-      const { dataValues } = await Models.getModels().banks.get(id)
-      return dataValues
+    resolve: async (rootValue, { id }, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        return await Models.getModels().banks.get(id)
+      } catch (err) {
+        throw err
+      }
     }
   },
   banks: {
-    type: GraphQLList(GraphQLBank),
-    resolve: async () => {
-      const { rows } = await Models.getModels().banks.find()
-      return rows.map(r => r.dataValues)
+    type: new GraphQLList(GraphQLBank),
+    resolve: async (rootValue, args, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        const { data } = await Models.getModels().banks.find()
+        return data
+      } catch (err) {
+        throw err
+      }
     }
   }
 }

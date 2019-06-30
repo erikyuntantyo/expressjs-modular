@@ -1,6 +1,6 @@
 'use strict'
 
-import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLBank from './banks'
 import GraphQLDate from './date'
@@ -10,32 +10,29 @@ export default new GraphQLObjectType({
   name: 'accounts',
   fields: {
     id: {
-      type: GraphQLID
+      type: new GraphQLNonNull(GraphQLID)
     },
     accountNumber: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     bank: {
-      type: GraphQLBank,
-      resolve: async ({ bankId }) => {
-        const { dataValues } = await Models.getModels().banks.get(bankId) || {}
-        return dataValues
-      }
+      type: new GraphQLNonNull(GraphQLBank),
+      resolve: async ({ bankId }) => await Models.getModels().banks.get(bankId)
     },
     firstName: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     lastName: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     dob: {
-      type: GraphQLDate
+      type: new GraphQLNonNull(GraphQLDate)
     },
     address: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     },
     phone: {
-      type: GraphQLString
+      type: new GraphQLNonNull(GraphQLString)
     }
   }
 })
