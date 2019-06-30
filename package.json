@@ -1,6 +1,6 @@
 {
   "name": "expressjs-modular",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Implementation ExpressJS with Graphql",
   "main": "src/index.js",
   "engines": {

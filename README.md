@@ -62,6 +62,14 @@ root  // root folder
 
 ## API Blueprint
 
+### GraphQL API
+
+```diff
+# POST /graphql
+```
+
+### Restful API
+
 #### Users Endpoint
 
 ```diff
@@ -135,11 +143,9 @@ root  // root folder
 
 ## Features
 
-1. Rest API endpoint
+1. Restful API with authorization method in the hook of each service modules.
 
-2. GraphQL endpoint
-
-3. Endpoint authorization in the header and allow to enabled or disabled from the hook of each service modules
+2. GraphQL API with authorization method and can be added in the first line of each resolve methods and wrapped by try-catch.
 
 ## Todo
 
@@ -148,6 +154,8 @@ root  // root folder
 2. Completing transaction module
 
 3. Add authentication in graphql method
+
+4. Add reset authentication token method
 
 ## Changelog
 
@@ -222,6 +230,20 @@ __0.2.0__
 - Creates authentication method for graphql module
 
 - Enables custom errors for graphql module
+
+__0.2.1__
+
+- Fixes destructuring null or undefined object
+
+- Updates data model methods
+
+- Adds graphql auth token expired custom error
+
+- Updates auth token verification helper method
+
+- Updates service global hook authentication method
+
+- Adds auth verification in graphql schema
 
 ## License
 
