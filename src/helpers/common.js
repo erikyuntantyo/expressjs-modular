@@ -3,19 +3,33 @@
 import config from 'config'
 import jwt from 'jsonwebtoken'
 
+import {
+  GraphQLInternalServerError,
+  GraphQLInvalidCredentialError,
+  GraphQLTokenExpiredError,
+  GraphQLUnauthorizedError
+} from '../helpers/graphql-custom-errors'
 import Models from '../models'
 
 export default class CommonHelper {
-  constructor() {}
+  constructor() { }
 
-  static verifyToken(token) {
+  static async verifyAuthToken(token) {
     try {
-      const { userId, exp } = jwt.verify(token, config.auth.secret)
-      const { dataValues: user } = Models.getModels().users.get(userId)
+      if (!token) {
+        throw new GraphQLUnauthorizedError()
+      }
 
-      return user && (exp <= Date.now())
+      const { userId, exp } = jwt.verify(token, config.auth.secret)
+      const user = await Models.getModels().users.get(userId)
+
+      if (user && (exp <= Date.now())) {
+        throw new GraphQLTokenExpiredError()
+      } else if (!user) {
+        throw new GraphQLInvalidCredentialError()
+      }
     } catch (error) {
-      return false
+      throw new GraphQLInternalServerError(error.message || error)
     }
   }
 }
