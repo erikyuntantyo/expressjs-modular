@@ -26,12 +26,12 @@ export default class Service extends ServiceBase {
 
   async create({ username, password }) {
     if (username && password) {
-      const { count, rows } = await this.models.users.find({
+      const { data, total } = await this.models.users.find({
         where: { username }
       })
 
-      if (count > 0) {
-        const [{ dataValues: user }] = rows
+      if (total > 0) {
+        const [user] = data
 
         if (await bcrypt.compare(password, user.password)) {
           const now = Date.now()

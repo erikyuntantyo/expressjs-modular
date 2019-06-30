@@ -5,27 +5,38 @@ export default class ModelBase {
     this._schema = schema
   }
 
-  get(id) {
-    return this._schema.findByPk(id)
+  async get(id) {
+    const { dataValues } = id ? await this._schema.findByPk(id) : {}
+    return dataValues
   }
 
-  find(params) {
-    return this._schema.findAndCountAll(params)
+  async find(params) {
+    const { count, rows } = await this._schema.findAndCountAll(params) || {}
+
+    return {
+      total: count,
+      data: ((count > 0) ? (rows.map(({ dataValues }) => dataValues)) : [])
+    }
   }
 
-  create(data) {
-    return this._schema.create(data)
+  async create(data) {
+    const { dataValues } = await this._schema.create(data) || {}
+    return dataValues
   }
 
-  update(id, data) {
-    return this._schema.update(data, {
+  async update(id, data) {
+    const { dataValues } = await this._schema.update(data, {
       where: { id }
-    })
+    }) || {}
+
+    return dataValues
   }
 
-  delete(id) {
-    return this._schema.destroy({
+  async delete(id) {
+    const { dataValues } = await this._schema.destroy({
       where: { id }
-    })
+    }) || {}
+
+    return dataValues
   }
 }

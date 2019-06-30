@@ -39,10 +39,7 @@ export default class ServiceBase {
 
       router.get(`${this.path}/:id`, hookBeforeGet, async (req, res, next) => {
         try {
-          const { dataValues } = await this.get(req.params.id)
-
-          res.results = dataValues
-
+          res.results = await this.get(req.params.id)
           next()
         } catch (err) {
           if (err instanceof CustomError) {
@@ -77,10 +74,7 @@ export default class ServiceBase {
 
       router.get(this.path, hookBeforeFind, async (req, res, next) => {
         try {
-          const { count, rows } = await this.find(req.query)
-
-          res.results = { total: count, data: rows.map(row => row.dataValues) }
-
+          res.results = await this.find(req.query)
           next()
         } catch (err) {
           if (err instanceof CustomError) {
@@ -116,10 +110,7 @@ export default class ServiceBase {
       router.post(this.path, hookBeforeCreate, async (req, res, next) => {
         try {
           req.body.id = uuidv4()
-
-          const created = await this.create(req.body)
-
-          res.results = created.dataValues || created
+          res.results = await this.create(req.body)
 
           next()
         } catch (err) {
@@ -155,10 +146,7 @@ export default class ServiceBase {
 
       router.put(`${this.path}/:id`, hookBeforeUpdate, async (req, res, next) => {
         try {
-          const { dataValues } = await this.update(req.params.id, req.body, req.query)
-
-          res.results = dataValues
-
+          res.results = await this.update(req.params.id, req.body, req.query)
           next()
         } catch (err) {
           if (err instanceof CustomError) {
@@ -193,10 +181,7 @@ export default class ServiceBase {
 
       router.delete(`${this.path}/:id`, hookBeforeDelete, async (req, res, next) => {
         try {
-          const { dataValues } = await this.delete(req.params.id, req.query)
-
-          res.results = dataValues
-
+          res.results = await this.delete(req.params.id, req.query)
           next()
         } catch (err) {
           if (err instanceof CustomError) {
