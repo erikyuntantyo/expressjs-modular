@@ -22,12 +22,12 @@ export default {
       }
     },
     resolve: async (rootValue, { username, password }) => {
-      const { rows, count } = await Models.getModels().users.find({
+      const { total, data } = await Models.getModels().users.find({
         where: { username }
       })
 
-      if (count > 0) {
-        const [{ dataValues: user }] = rows
+      if (total > 0) {
+        const [user] = data
 
         if (await bcrypt.compare(password, user.password)) {
           const now = Date.now()
