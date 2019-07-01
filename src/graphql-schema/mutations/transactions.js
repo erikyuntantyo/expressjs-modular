@@ -1,3 +1,7 @@
 'use strict'
 
-export default {}
+export default {
+  deposit: {},
+  transfer: {},
+  withdraw: {}
+}

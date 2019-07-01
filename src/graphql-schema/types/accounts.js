@@ -33,6 +33,12 @@ export default new GraphQLObjectType({
     },
     phone: {
       type: new GraphQLNonNull(GraphQLString)
+    },
+    createdAt: {
+      type: GraphQLDate
+    },
+    updatedAt: {
+      type: GraphQLDate
     }
   }
 })

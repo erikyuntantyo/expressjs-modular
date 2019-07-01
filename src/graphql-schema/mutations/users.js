@@ -29,6 +29,7 @@ export default {
       return await Models.getModels().users.create(data)
     }
   },
+  // disableUser: {},
   updateUser: {
     type: GraphQLUser,
     args: {

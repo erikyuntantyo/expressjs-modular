@@ -1,5 +1,8 @@
 'use strict'
 
 export default {
-  transaction: {}
+  transactionById: {},
+  transactionByUserId: {},
+  transactionByUserIdAndDateRange: {},
+  userBalance: {}
 }

@@ -28,6 +28,7 @@ export default {
       }
     }
   },
+  // disableBank: {},
   updateBank: {
     type: GraphQLBank,
     args: {

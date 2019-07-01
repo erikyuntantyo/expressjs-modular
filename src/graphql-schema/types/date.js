@@ -5,7 +5,7 @@ import { Kind } from 'graphql/language'
 
 export default new GraphQLScalarType({
   name: 'Date',
-  serialize: value => value.getTime(),
+  serialize: value => value,
   parseValue: value => new Date(value),
   parseLiteral: ast => {
     if (ast.kind === Kind.INT) {

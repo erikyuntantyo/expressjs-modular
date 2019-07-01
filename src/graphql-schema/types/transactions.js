@@ -2,7 +2,8 @@
 
 import { GraphQLFloat, GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
 
-import GraphQLAccount from './accounts'
+import GraphQLDate from './date'
+import GraphQLUser from './users'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
@@ -12,7 +13,7 @@ export default new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLID)
     },
     user: {
-      type: new GraphQLNonNull(GraphQLAccount),
+      type: new GraphQLNonNull(GraphQLUser),
       resolve: async ({ userId }) => await Models.getModels().users.get(userId)
     },
     type: {
@@ -26,6 +27,12 @@ export default new GraphQLObjectType({
     },
     balance: {
       type: new GraphQLNonNull(GraphQLFloat)
+    },
+    createdAt: {
+      type: GraphQLDate
+    },
+    updatedAt: {
+      type: GraphQLDate
     }
   }
 })
