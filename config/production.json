@@ -9,9 +9,12 @@
     "port": 3306,
     "username": "",
     "password": "",
-    "force": false
+    "reset": false
   },
   "auth": {
     "secret": ""
+  },
+  "admin": {
+    "email": ""
   }
 }

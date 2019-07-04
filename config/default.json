@@ -9,9 +9,12 @@
     "port": 3306,
     "username": "root",
     "password": "qweasd123",
-    "force": false
+    "reset": false
   },
   "auth": {
     "secret": "fHqvvv6h57lQ2vvl4lEKlXS1bbpFFhtWAX5SuPZr3VHTsfz8cR2CVLZzZyFzQO0GtVPisZYZBtMtFTOBuxpFi6l9jwBJluje0l6R"
+  },
+  "admin": {
+    "email": "admin@gmail.com"
   }
 }
