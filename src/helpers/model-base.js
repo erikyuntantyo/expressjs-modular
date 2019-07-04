@@ -6,7 +6,7 @@ export default class ModelBase {
   }
 
   async get(id) {
-    const { dataValues } = id ? await this._schema.findByPk(id) : {}
+    const { dataValues } = id ? (await this._schema.findByPk(id) || {}) : {}
     return dataValues
   }
 
