@@ -1,6 +1,6 @@
 'use strict'
 
-import { GraphQLID, GraphQLString } from 'graphql'
+import { GraphQLBoolean, GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql'
 import uuidv4 from 'uuidv4'
 
 import CommonHelper from '../../helpers/common'
@@ -28,7 +28,25 @@ export default {
       }
     }
   },
-  // disableBank: {},
+  disableBank: {
+    type: GraphQLBank,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLID)
+      },
+      disabled: {
+        type: GraphQLBoolean
+      }
+    },
+    resolve: async (rootValue, { id, disabled = true }, { headers: { authorization } }) => {
+      try {
+        await CommonHelper.verifyAuthToken(authorization)
+        return await Models.getModels().banks.update(id, { disabled })
+      } catch (err) {
+        throw err
+      }
+    }
+  },
   updateBank: {
     type: GraphQLBank,
     args: {
@@ -46,8 +64,8 @@ export default {
       try {
         await CommonHelper.verifyAuthToken(authorization)
         return await Models.getModels().banks.update(id, { name, code })
-      } catch (e) {
-        throw e
+      } catch (err) {
+        throw err
       }
     }
   }
