@@ -31,15 +31,15 @@ export default class Service extends ServiceBase {
       })
 
       if (total > 0) {
-        const [user] = data
+        const [{ id, password: _password, type }] = data
 
-        if (await bcrypt.compare(password, user.password)) {
+        if (await bcrypt.compare(password, _password)) {
           const now = Date.now()
           const exp = now + (3600 * 1000)
-          const resetKey = await bcrypt.hash(`${username}:${password}`, 10)
+          const resetKey = await bcrypt.hash(`${username}:${_password}`, 10)
           const token = jwt.sign({
-            userId: user.id,
-            type: user.type,
+            userId: id,
+            type: type,
             iat: now,
             exp,
             iss: 'expressjs',
