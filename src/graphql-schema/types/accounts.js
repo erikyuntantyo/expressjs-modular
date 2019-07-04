@@ -4,7 +4,6 @@ import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLBank from './banks'
 import GraphQLDate from './date'
-import GraphQLUser from './users'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
@@ -34,13 +33,6 @@ export default new GraphQLObjectType({
     },
     phone: {
       type: GraphQLString
-    },
-    relatedUser: {
-      type: GraphQLUser,
-      resolve: async ({ id: accountId }) => {
-        const { data: [user] } = await Models.getModels().users.find({ where: { accountId }})
-        return user
-      }
     },
     createdAt: {
       type: GraphQLDate
