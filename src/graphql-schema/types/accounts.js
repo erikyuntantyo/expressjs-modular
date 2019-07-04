@@ -1,38 +1,46 @@
 'use strict'
 
-import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLBank from './banks'
 import GraphQLDate from './date'
+import GraphQLUser from './users'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
   name: 'accounts',
   fields: {
     id: {
-      type: new GraphQLNonNull(GraphQLID)
+      type: GraphQLID
     },
     accountNumber: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     bank: {
-      type: new GraphQLNonNull(GraphQLBank),
+      type: GraphQLBank,
       resolve: async ({ bankId }) => await Models.getModels().banks.get(bankId)
     },
     firstName: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     lastName: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     dob: {
-      type: new GraphQLNonNull(GraphQLDate)
+      type: GraphQLDate
     },
     address: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
     phone: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
+    },
+    relatedUser: {
+      type: GraphQLUser,
+      resolve: async ({ id: accountId }) => {
+        const { data: [user] } = await Models.getModels().users.find({ where: { accountId }})
+        return user
+      }
     },
     createdAt: {
       type: GraphQLDate

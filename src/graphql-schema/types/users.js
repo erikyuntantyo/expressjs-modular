@@ -1,23 +1,26 @@
 'use strict'
 
-import { GraphQLID, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLAccount from './accounts'
 import GraphQLDate from './date'
-import GraphQLUserRole from './user-roles'
+import GraphQLUserRoles from './user-roles'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
   name: 'users',
   fields: {
     id: {
-      type: new GraphQLNonNull(GraphQLID)
+      type: GraphQLID
     },
     username: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     },
-    type: {
-      type: new GraphQLNonNull(GraphQLUserRole)
+    email: {
+      type: GraphQLString
+    },
+    role: {
+      type: GraphQLUserRoles
     },
     account: {
       type: GraphQLAccount,
