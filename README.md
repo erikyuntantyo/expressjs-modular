@@ -255,6 +255,36 @@ __0.2.1__
 
 - Adds auth verification in graphql schema
 
+__0.2.2__
+
+- Updates graphql types, queries, and mutations schema
+
+- Updates sequelize module
+
+- Updates configurations module
+
+- Updates authentication service
+
+- Adds new field to each models
+
+- Adds graphql method not allowed error
+
+- Updates graphql schema types
+
+- Adds graphql reset token method
+
+- Adds graphql disable bank method
+
+- Adds graphql create, update, and delete account methods
+
+- Updates graphql users methods
+
+- Adds how to configure server in README.md file
+
+- Updates graphql transaction mutation methods
+
+- Update graphql transaction query methods
+
 ## License
 
 Copyright (c) 2019
