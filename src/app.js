@@ -40,7 +40,7 @@ export default class App {
           }
         }
 
-        return new GraphQLInternalServerError()
+        return new GraphQLInternalServerError(error)
       }
     })))
 
