@@ -21,6 +21,11 @@ export default class Model extends ModelBase {
       code: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      enable: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       }
     }))
   }

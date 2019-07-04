@@ -19,6 +19,11 @@ export default class Model extends ModelBase {
         unique: true,
         allowNull: false
       },
+      email: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+      },
       password: {
         type: Sequelize.STRING,
         allowNull: false
@@ -27,9 +32,14 @@ export default class Model extends ModelBase {
         type: Sequelize.UUID,
         allowNull: true
       },
-      type: {
+      role: {
         type: Sequelize.ENUM,
         values: ['admin', 'teller', 'customer']
+      },
+      enable: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       }
     }))
   }

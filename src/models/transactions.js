@@ -31,6 +31,9 @@ export default class Model extends ModelBase {
       description: {
         type: Sequelize.STRING
       },
+      remarks: {
+        type: Sequelize.STRING
+      },
       balance: {
         type: Sequelize.FLOAT,
         allowNull: false,
