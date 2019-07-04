@@ -1,7 +1,6 @@
 'use strict'
 
 import bodyParser from 'body-parser'
-import config from 'config'
 import cors from 'cors'
 import errorHandler from 'errorhandler'
 import express from 'express'
@@ -26,7 +25,7 @@ export default class App {
 
     this._server.get('/test', (req, res) => res.status(200).json({ responseCode: 200, message: 'Hi, I am alive...' }).end())
 
-    DBClient.initialize(config.db).then(() => console.log('Database initialized...'))
+    DBClient.initialize()
     Services.initialize(this._server, Models.initialize(DBClient.connection()).getModels())
 
     this._server.use('/graphql', graphQLHttp((req) => ({
