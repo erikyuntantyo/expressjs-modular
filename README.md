@@ -23,7 +23,17 @@ This is an example of ExpressJS modular approach that uses ES6 and include Graph
     $ npm install
     ```
 
-3. Run
+3. Configuration
+
+    a. Set the listener port to run the server
+
+    b. Set the database connection
+
+    c. Set the authentication secret using random text
+
+    d. Set administrator email to create super admin user
+
+4. Run
     Using yarn
     ```bash
     $ yarn start
@@ -34,7 +44,7 @@ This is an example of ExpressJS modular approach that uses ES6 and include Graph
     $ npm start
     ```
 
-4. Test
+5. Test
     Using yarn
     ```
     $ yarn test
