@@ -4,7 +4,6 @@ import { GraphQLID, GraphQLObjectType, GraphQLString } from 'graphql'
 
 import GraphQLAccount from './accounts'
 import GraphQLDate from './date'
-import GraphQLUserRoles from './user-roles'
 import Models from '../../models'
 
 export default new GraphQLObjectType({
@@ -20,7 +19,7 @@ export default new GraphQLObjectType({
       type: GraphQLString
     },
     role: {
-      type: GraphQLUserRoles
+      type: GraphQLString
     },
     account: {
       type: GraphQLAccount,
