@@ -1,9 +1,9 @@
 'use strict'
 
-import { GraphQLFloat, GraphQLID, GraphQLList, GraphQLNonNull } from 'graphql'
+import { GraphQLFloat, GraphQLID, GraphQLNonNull } from 'graphql'
 
 import CommonHelper from '../../helpers/common'
-import { GraphQLDate, GraphQLTransaction } from '../types'
+import { GraphQLDate, GraphQLTransaction, GraphQLTransactionsList } from '../types'
 import Models from '../../models'
 
 export default {
@@ -24,7 +24,7 @@ export default {
     }
   },
   transactionByUserId: {
-    type: new GraphQLList(GraphQLTransaction),
+    type: GraphQLTransactionsList,
     args: {
       userId: {
         type: new GraphQLNonNull(GraphQLID)
@@ -33,15 +33,14 @@ export default {
     resolve: async (rootValue, { userId }, { headers: { authorization } }) => {
       try {
         await CommonHelper.verifyAuthToken(authorization)
-        const { data } = Models.getModels().transactions.find({ where: { userId } })
-        return data
+        return await Models.getModels().transactions.find({ where: { userId } })
       } catch (err) {
         throw err
       }
     }
   },
   transactionByUserIdAndDateRange: {
-    type: new GraphQLList(GraphQLTransaction),
+    type: GraphQLTransactionsList,
     args: {
       userId: {
         type: new GraphQLNonNull(GraphQLID)
@@ -56,7 +55,7 @@ export default {
     resolve: async (rootValue, { userId, startDate, endDate }, { headers: { authorization } }) => {
       try {
         await CommonHelper.verifyAuthToken(authorization)
-        const { data } = Models.getModels().transactions.find({
+        return await Models.getModels().transactions.find({
           where: {
             userId,
             createdAt: {
@@ -64,7 +63,6 @@ export default {
             }
           }
         })
-        return data
       } catch (err) {
         throw err
       }
@@ -80,7 +78,7 @@ export default {
     resolve: async (rootValue, { userId }, { headers: { authorization } }) => {
       try {
         await CommonHelper.verifyAuthToken(authorization)
-        const { data: [{ balance }] } = Models.getModels().transactions.find({
+        const { data: [{ balance }] } = await Models.getModels().transactions.find({
           where: { userId },
           order: [['createdAt', 'DESC']]
         })

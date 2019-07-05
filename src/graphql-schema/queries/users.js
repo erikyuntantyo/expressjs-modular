@@ -1,9 +1,9 @@
 'use strict'
 
-import { GraphQLID, GraphQLNonNull, GraphQLList } from 'graphql'
+import { GraphQLID, GraphQLNonNull } from 'graphql'
 
 import CommonHelper from '../../helpers/common'
-import { GraphQLUser } from '../types'
+import { GraphQLUser, GraphQLUsersList } from '../types'
 import Models from '../../models'
 
 export default {
@@ -24,12 +24,11 @@ export default {
     }
   },
   users: {
-    type: new GraphQLList(GraphQLUser),
+    type: GraphQLUsersList,
     resolve: async (rootValue, args, { headers: { authorization } }) => {
       try {
         await CommonHelper.verifyAuthToken(authorization)
-        const { data } = await Models.getModels().users.find()
-        return data
+        return await Models.getModels().users.find()
       } catch (err) {
         throw err
       }
