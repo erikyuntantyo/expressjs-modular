@@ -61,12 +61,11 @@ export default {
       try {
         await CommonHelper.verifyAuthToken(authorization)
 
-        const { data: [{ balance: destBalance }] } = await Models.getModels().transactions.find({
-          where: {
-            userId: destUserId
-          },
-          order: [['createdAt', 'DESC']]
-        }) || {}
+        const { firstName, lastName } = await Models.getModels().users.get(userId) || {}
+
+        if (!firstName || !lastName) {
+          throw new GraphQLMethodNotAllowedError('Unknown owner account.')
+        }
 
         const { data: [{ balance }] } = await Models.getModels().transactions.find({
           where: { userId },
@@ -77,13 +76,18 @@ export default {
           throw new GraphQLMethodNotAllowedError('Transfers may not be made because the balance is lower than expected.')
         }
 
-        const { firstName: destFirstName, lastName: destLastName } = await Models.getModels().users.get(destUserId)
+        const { firstName: destFirstName, lastName: destLastName } = await Models.getModels().users.get(destUserId) || {}
 
         if (!destFirstName || !destLastName) {
           throw new GraphQLMethodNotAllowedError('Unknown destination account.')
         }
 
-        const { firstName, lastName } = await Models.getModels().users.get(userId)
+        const { data: [{ balance: destBalance }] } = await Models.getModels().transactions.find({
+          where: {
+            userId: destUserId
+          },
+          order: [['createdAt', 'DESC']]
+        }) || {}
 
         await Models.getModels().transactions.create({
           userId: destUserId,
