@@ -76,6 +76,8 @@ root  // root folder
 
 ```diff
 # POST /graphql
++ headers: Authorization token with generated JWT
++ payload: Graphql query
 ```
 
 ### Restful API
@@ -284,6 +286,24 @@ __0.2.2__
 - Updates graphql transaction mutation methods
 
 - Update graphql transaction query methods
+
+__0.2.3__
+
+- Fixes circular dependency issue
+
+- Updates graphql error handler
+
+- Fixes model base get method
+
+- Adds data list types in graphql schema
+
+- Fixes irrelevant results from the user role field in graphql schema
+
+- Updates graphql schema transaction mutation methods
+
+- Updates graphql schema mutations index file
+
+- Enables graphql schema mutations and queries
 
 ## License
 
