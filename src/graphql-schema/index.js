@@ -2,14 +2,15 @@
 
 import { GraphQLObjectType, GraphQLSchema } from 'graphql'
 
-import { GraphQLAuthMutations, GraphQLBankMutations, GraphQLUserMutations } from './mutations'
-import { GraphQLAccountQueries, GraphQLBankQueries, GraphQLUserQueries } from './queries'
+import { GraphQLAccountMutations, GraphQLAuthMutations, GraphQLBankMutations, GraphQLTransactionMutations, GraphQLUserMutations } from './mutations'
+import { GraphQLAccountQueries, GraphQLBankQueries, GraphQLTransactionQueries, GraphQLUserQueries } from './queries'
 
 const query = new GraphQLObjectType({
   name: 'query',
   fields: {
     ...GraphQLAccountQueries,
     ...GraphQLBankQueries,
+    ...GraphQLTransactionQueries,
     ...GraphQLUserQueries
   }
 })
@@ -17,8 +18,10 @@ const query = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: 'mutation',
   fields: {
+    ...GraphQLAccountMutations,
     ...GraphQLAuthMutations,
     ...GraphQLBankMutations,
+    ...GraphQLTransactionMutations,
     ...GraphQLUserMutations
   }
 })
