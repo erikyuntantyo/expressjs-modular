@@ -1,10 +1,10 @@
 'use strict'
 
 import config from 'config'
+import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 
 import {
-  GraphQLInternalServerError,
   GraphQLInvalidCredentialError,
   GraphQLTokenExpiredError,
   GraphQLUnauthorizedError
@@ -29,7 +29,11 @@ export default class CommonHelper {
         throw new GraphQLInvalidCredentialError()
       }
     } catch (error) {
-      throw new GraphQLInternalServerError(error.message || error)
+      if (error instanceof GraphQLError) {
+        throw error
+      }
+
+      throw new GraphQLInvalidCredentialError(error.message || error)
     }
   }
 }
