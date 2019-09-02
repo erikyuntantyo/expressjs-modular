@@ -19,26 +19,24 @@ export default {
       }
     },
     resolve: async (rootValue, data, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
+      await CommonHelper.verifyAuthToken(authorization)
 
-        const { data: [{ balance }] } = await Models.getModels().transactions.find({
-          where: {
-            userId: data.userId
-          },
-          order: [['createdAt', 'DESC']]
-        }) || {}
+      const { data: [{ balance }] } = await Models.getModels().transactions.find({
+        where: {
+          userId: data.userId
+        },
+        order: [['createdAt', 'DESC']]
+      }) || {}
 
-        data.balance = (balance || 0) + data.amount
-        data.remarks = `DEP ${data.amount}`
+      const _balance = (balance || 0) + data.amount
+      const _remarks = `DEP ${data.amount}`
 
-        return await Models.getModels().transactions.create({
-          ...data,
-          type: 'CR'
-        })
-      } catch (err) {
-        throw err
-      }
+      return await Models.getModels().transactions.create({
+        ...data,
+        balance: _balance,
+        remarks: _remarks,
+        type: 'CR'
+      })
     }
   },
   transfer: {
@@ -58,57 +56,53 @@ export default {
       }
     },
     resolve: async (rootValue, { userId, destUserId, amount, description }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
+      await CommonHelper.verifyAuthToken(authorization)
 
-        const { firstName, lastName } = await Models.getModels().users.get(userId) || {}
+      const { firstName, lastName } = await Models.getModels().users.get(userId) || {}
 
-        if (!firstName || !lastName) {
-          throw new GraphQLMethodNotAllowedError('Unknown owner account.')
-        }
-
-        const { data: [{ balance }] } = await Models.getModels().transactions.find({
-          where: { userId },
-          order: [['createdAt', 'DESC']]
-        }) || {}
-
-        if (amount > balance) {
-          throw new GraphQLMethodNotAllowedError('Transfers may not be made because the balance is lower than expected.')
-        }
-
-        const { firstName: destFirstName, lastName: destLastName } = await Models.getModels().users.get(destUserId) || {}
-
-        if (!destFirstName || !destLastName) {
-          throw new GraphQLMethodNotAllowedError('Unknown destination account.')
-        }
-
-        const { data: [{ balance: destBalance }] } = await Models.getModels().transactions.find({
-          where: {
-            userId: destUserId
-          },
-          order: [['createdAt', 'DESC']]
-        }) || {}
-
-        await Models.getModels().transactions.create({
-          userId: destUserId,
-          amount: amount,
-          description,
-          balance: (destBalance + amount),
-          remarks: `TRF DB ${amount}\n${firstName} ${lastName}`,
-          type: 'TRF'
-        })
-
-        return await Models.getModels().transactions.create({
-          userId,
-          amount,
-          description,
-          balance: balance - amount,
-          remarks: `TRF CR ${amount}\n${destFirstName} ${destLastName}`,
-          type: 'TRF'
-        })
-      } catch (err) {
-        throw err
+      if (!firstName || !lastName) {
+        throw new GraphQLMethodNotAllowedError('Unknown owner account.')
       }
+
+      const { data: [{ balance }] } = await Models.getModels().transactions.find({
+        where: { userId },
+        order: [['createdAt', 'DESC']]
+      }) || {}
+
+      if (amount > balance) {
+        throw new GraphQLMethodNotAllowedError('Transfers may not be made because the balance is lower than expected.')
+      }
+
+      const { firstName: destFirstName, lastName: destLastName } = await Models.getModels().users.get(destUserId) || {}
+
+      if (!destFirstName || !destLastName) {
+        throw new GraphQLMethodNotAllowedError('Unknown destination account.')
+      }
+
+      const { data: [{ balance: destBalance }] } = await Models.getModels().transactions.find({
+        where: {
+          userId: destUserId
+        },
+        order: [['createdAt', 'DESC']]
+      }) || {}
+
+      await Models.getModels().transactions.create({
+        userId: destUserId,
+        amount: amount,
+        description,
+        balance: (destBalance + amount),
+        remarks: `TRF DB ${amount}\n${firstName} ${lastName}`,
+        type: 'TRF'
+      })
+
+      return await Models.getModels().transactions.create({
+        userId,
+        amount,
+        description,
+        balance: balance - amount,
+        remarks: `TRF CR ${amount}\n${destFirstName} ${destLastName}`,
+        type: 'TRF'
+      })
     }
   },
   withdraw: {
@@ -125,30 +119,28 @@ export default {
       }
     },
     resolve: async (rootValue, data, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
+      await CommonHelper.verifyAuthToken(authorization)
 
-        const { data: [{ balance }] } = await Models.getModels().transactions.find({
-          where: {
-            userId: data.userId
-          },
-          order: [['createdAt', 'DESC']]
-        }) || {}
+      const { data: [{ balance }] } = await Models.getModels().transactions.find({
+        where: {
+          userId: data.userId
+        },
+        order: [['createdAt', 'DESC']]
+      }) || {}
 
-        if (balance < data.amount) {
-          throw new GraphQLMethodNotAllowedError('Withdrawals may not be made because the balance is lower than expected.')
-        }
-
-        data.balance = (balance || 0) + data.amount
-        data.remarks = `WTDR ${data.amount}`
-
-        return await Models.getModels().transactions.create({
-          ...data,
-          type: 'DB'
-        })
-      } catch (err) {
-        throw err
+      if (balance < data.amount) {
+        throw new GraphQLMethodNotAllowedError('Withdrawals may not be made because the balance is lower than expected.')
       }
+
+      const _balance = (balance || 0) + data.amount
+      const _remarks = `WTDR ${data.amount}`
+
+      return await Models.getModels().transactions.create({
+        ...data,
+        balance: _balance,
+        remarks: _remarks,
+        type: 'DB'
+      })
     }
   }
 }

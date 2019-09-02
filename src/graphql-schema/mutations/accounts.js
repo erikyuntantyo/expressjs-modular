@@ -54,30 +54,26 @@ export default {
       address,
       phone
     }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
+      await CommonHelper.verifyAuthToken(authorization)
 
-        const createdAccount = await Models.getModels().accounts.create({
-          accountNumber,
-          bankId,
-          firstName,
-          lastName,
-          dob,
-          address,
-          phone
-        })
+      const createdAccount = await Models.getModels().accounts.create({
+        accountNumber,
+        bankId,
+        firstName,
+        lastName,
+        dob,
+        address,
+        phone
+      })
 
-        await Models.getModels().users.create({
-          username,
-          email,
-          password: await bcrypt.hash(password, 10),
-          accountId: createdAccount.id
-        })
+      await Models.getModels().users.create({
+        username,
+        email,
+        password: await bcrypt.hash(password, 10),
+        accountId: createdAccount.id
+      })
 
-        return createdAccount
-      } catch (err) {
-        throw err
-      }
+      return createdAccount
     }
   },
   disableAccount: {
@@ -91,12 +87,8 @@ export default {
       }
     },
     resolve: async (rootValue, { id, disabled = true }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().accounts.update(id, { disabled })
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().accounts.update(id, { disabled })
     }
   },
   updateAccount: {
@@ -125,18 +117,14 @@ export default {
       }
     },
     resolve: async (rootValue, { id, email, ...data }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
+      await CommonHelper.verifyAuthToken(authorization)
 
-        if (email) {
-          const { data: [{ id: userId }] } = await Models.getModels().users.find({ where: { accountId: id } })
-          await Models.getModels().users.update(userId, { email })
-        }
-
-        return await Models.getModels().accounts.update(id, data)
-      } catch (err) {
-        throw err
+      if (email) {
+        const { data: [{ id: userId }] } = await Models.getModels().users.find({ where: { accountId: id } })
+        await Models.getModels().users.update(userId, { email })
       }
+
+      return await Models.getModels().accounts.update(id, data)
     }
   }
 }

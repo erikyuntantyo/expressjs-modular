@@ -15,23 +15,15 @@ export default {
       }
     },
     resolve: async (rootValue, { id }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().users.get(id)
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().users.get(id)
     }
   },
   users: {
     type: GraphQLUsersList,
     resolve: async (rootValue, args, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().users.find()
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().users.find()
     }
   }
 }

@@ -15,23 +15,15 @@ export default {
       }
     },
     resolve: async (rootValue, { id }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().banks.get(id)
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().banks.get(id)
     }
   },
   banks: {
     type: GraphQLBanksList,
     resolve: async (rootValue, args, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().banks.find()
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().banks.find()
     }
   }
 }

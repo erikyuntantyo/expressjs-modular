@@ -19,13 +19,9 @@ export default {
       }
     },
     resolve: async (rootValue, data, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        data.id = uuidv4()
-        return await Models.getModels().banks.create(data)
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      data.id = uuidv4()
+      return await Models.getModels().banks.create(data)
     }
   },
   disableBank: {
@@ -39,12 +35,8 @@ export default {
       }
     },
     resolve: async (rootValue, { id, disabled = true }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().banks.update(id, { disabled })
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().banks.update(id, { disabled })
     }
   },
   updateBank: {
@@ -61,12 +53,8 @@ export default {
       }
     },
     resolve: async (rootValue, { id, name, code }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().banks.update(id, { name, code })
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().banks.update(id, { name, code })
     }
   }
 }

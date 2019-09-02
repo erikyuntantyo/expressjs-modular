@@ -15,12 +15,8 @@ export default {
       }
     },
     resolve: async (rootValue, { id }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().transactions.get(id)
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().transactions.get(id)
     }
   },
   transactionByUserId: {
@@ -31,12 +27,8 @@ export default {
       }
     },
     resolve: async (rootValue, { userId }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().transactions.find({ where: { userId } })
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().transactions.find({ where: { userId } })
     }
   },
   transactionByUserIdAndDateRange: {
@@ -53,19 +45,15 @@ export default {
       }
     },
     resolve: async (rootValue, { userId, startDate, endDate }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        return await Models.getModels().transactions.find({
-          where: {
-            userId,
-            createdAt: {
-              $between: [startDate, endDate]
-            }
+      await CommonHelper.verifyAuthToken(authorization)
+      return await Models.getModels().transactions.find({
+        where: {
+          userId,
+          createdAt: {
+            $between: [startDate, endDate]
           }
-        })
-      } catch (err) {
-        throw err
-      }
+        }
+      })
     }
   },
   userEffectiveBalance: {
@@ -76,16 +64,12 @@ export default {
       }
     },
     resolve: async (rootValue, { userId }, { headers: { authorization } }) => {
-      try {
-        await CommonHelper.verifyAuthToken(authorization)
-        const { data: [{ balance }] } = await Models.getModels().transactions.find({
-          where: { userId },
-          order: [['createdAt', 'DESC']]
-        })
-        return balance
-      } catch (err) {
-        throw err
-      }
+      await CommonHelper.verifyAuthToken(authorization)
+      const { data: [{ balance }] } = await Models.getModels().transactions.find({
+        where: { userId },
+        order: [['createdAt', 'DESC']]
+      })
+      return balance
     }
   }
 }
